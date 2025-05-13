@@ -4,8 +4,9 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private Mover _mover;
     [SerializeField] private Rotator _rotator;
-    [SerializeField] private float _moveSpeed;
-    [SerializeField] private float _rotateSpeed;
+
+    private float _moveSpeed = 10.0f;
+    private float _rotateSpeed = 750.0f;
 
     private string _xAxisName = "Horizontal";
     private string _zAxisName = "Vertical";

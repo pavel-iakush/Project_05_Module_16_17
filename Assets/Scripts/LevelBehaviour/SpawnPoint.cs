@@ -4,15 +4,17 @@ using UnityEngine;
 
 public class SpawnPoint : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private EnemyIdleStates _enemyIdleState;
+    [SerializeField] private EnemyAgroStates _enemyAgroStates;
 
-    // Update is called once per frame
-    void Update()
+    [SerializeField] private Player _player;
+    [SerializeField] private Enemy _enemyPrefab;
+
+    private void Awake()
     {
-        
+        Enemy enemy = Instantiate(_enemyPrefab);
+
+        ChasePlayer chasePlayer = new ChasePlayer(enemy, _player);
+        enemy.Initialize(chasePlayer);
     }
 }
