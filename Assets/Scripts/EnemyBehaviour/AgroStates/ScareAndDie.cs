@@ -15,7 +15,7 @@ public class ScareAndDie : IAgroBehaviour
         _player = player;
     }
 
-    public void Update(float deltaTime)
+    public void UpdateAgro(float deltaTime)
     {
         Vector3 direction = _enemy.transform.position - _player.transform.position;
         float distance = direction.magnitude;

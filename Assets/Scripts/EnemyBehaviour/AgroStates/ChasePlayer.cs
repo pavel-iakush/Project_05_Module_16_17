@@ -17,7 +17,7 @@ public class ChasePlayer : IAgroBehaviour
         _player = player;
     }
 
-    public void Update(float deltaTime)
+    public void UpdateAgro(float deltaTime)
     {
         Vector3 direction = _player.transform.position - _enemy.transform.position;
         Vector3 normalizedDirection = direction.normalized;

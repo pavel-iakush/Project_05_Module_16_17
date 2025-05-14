@@ -16,7 +16,7 @@ public class RunAway : IAgroBehaviour
         _player = player;
     }
 
-    public void Update(float deltaTime)
+    public void UpdateAgro(float deltaTime)
     {
         Vector3 direction = _enemy.transform.position - _player.transform.position;
         Vector3 normalizedDirection = direction.normalized;
