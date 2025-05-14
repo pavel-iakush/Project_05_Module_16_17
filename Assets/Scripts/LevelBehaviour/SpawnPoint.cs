@@ -12,9 +12,15 @@ public class SpawnPoint : MonoBehaviour
 
     private void Awake()
     {
-        Enemy enemy = Instantiate(_enemyPrefab);
+        Enemy enemy = Instantiate(_enemyPrefab, gameObject.transform);
 
-        ChasePlayer chasePlayer = new ChasePlayer(enemy, _player);
-        enemy.Initialize(chasePlayer);
+        /*ChasePlayer chasePlayer = new ChasePlayer(enemy, _player);
+        enemy.Initialize(chasePlayer);*/
+
+        /*RunAway runAway = new RunAway(enemy, _player);
+        enemy.Initialize(runAway);*/
+
+        ScareAndDie scareAndDie = new ScareAndDie(enemy, _player);
+        enemy.Initialize(scareAndDie);
     }
 }

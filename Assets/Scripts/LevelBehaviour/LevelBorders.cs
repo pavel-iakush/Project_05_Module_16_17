@@ -3,8 +3,8 @@ using UnityEngine;
 public class LevelBorders : MonoBehaviour
 {
     private float _xBorder = 9.0f;
-    private float _zUpperBorder = 5.8f;
-    private float _zLowerBorder = -6.6f;
+    private float _zUpperBorder = 5.4f;
+    private float _zLowerBorder = -7.3f;
 
     void Update()
     {
