@@ -1,18 +1,37 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class RandomPatrol : MonoBehaviour
+public class RandomPatrol : IIdleBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    private Vector3 _targetPoint = Vector3.zero;
+
+    private Enemy _enemy;
+
+    private float _patrolSpeed = 2.0f;
+    private float _deadZone = 0.1f;
+
+    public RandomPatrol(Enemy enemy)
     {
-        
+        _enemy = enemy;
+
+        ChooseTarget();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void UpdateIdle(float deltaTime)
     {
-        
+        Vector3 direction = _targetPoint - _enemy.transform.position;
+
+        if (direction.magnitude <= _deadZone)
+            ChooseTarget();
+
+        ProcessMoveTo(direction.normalized, deltaTime);
     }
+
+    private void ChooseTarget()
+    {
+        _targetPoint.x = Random.Range(-8, 9);
+        _targetPoint.z = Random.Range(-6, 7);
+    }
+
+    private void ProcessMoveTo(Vector3 direction, float deltaTime)
+        => _enemy.transform.Translate(direction * _patrolSpeed * deltaTime, Space.World);
 }

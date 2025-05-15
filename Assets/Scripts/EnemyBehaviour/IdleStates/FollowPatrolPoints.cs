@@ -3,8 +3,7 @@ using UnityEngine;
 
 public class FollowPatrolPoints : IIdleBehaviour
 {
-    private List<PatrolPoint> _patrolPoints;
-    private Queue<Vector3> _pointPositions;
+    private Queue<Vector3> _pointPositions = new Queue<Vector3>();
     private Vector3 _currentPoint;
 
     private Enemy _enemy;
@@ -14,11 +13,9 @@ public class FollowPatrolPoints : IIdleBehaviour
 
     public FollowPatrolPoints(List<PatrolPoint> patrolPoint, Enemy enemy)
     {
-        _patrolPoints = patrolPoint;
         _enemy = enemy;
-        _pointPositions = new Queue<Vector3>();
 
-        foreach (PatrolPoint point in _patrolPoints)
+        foreach (PatrolPoint point in patrolPoint)
             _pointPositions.Enqueue(point.transform.position);
 
         SwitchPatrolPoint();
@@ -28,12 +25,10 @@ public class FollowPatrolPoints : IIdleBehaviour
     {
         Vector3 direction = _currentPoint - _enemy.transform.position;
 
-        if (HasReachedPoint(direction))
+        if (direction.magnitude <= _deadZone)
             SwitchPatrolPoint();
 
-        Vector3 normalizedDirection = direction.normalized;
-
-        ProcessMoveTo(normalizedDirection, deltaTime);
+        ProcessMoveTo(direction.normalized, deltaTime);
     }
 
     private void SwitchPatrolPoint()
@@ -44,7 +39,4 @@ public class FollowPatrolPoints : IIdleBehaviour
 
     private void ProcessMoveTo(Vector3 direction, float deltaTime)
         => _enemy.transform.Translate(direction * _patrolSpeed * deltaTime, Space.World);
-
-    private bool HasReachedPoint(Vector3 direction)
-        => direction.magnitude <= _deadZone;
 }

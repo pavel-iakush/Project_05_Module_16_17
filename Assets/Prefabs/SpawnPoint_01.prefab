@@ -44,8 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1d6b9e1530f8e54c8fdec843e079bfd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyIdleState: 0
+  _enemyIdleStates: 1
   _enemyAgroStates: 0
-  _player: {fileID: 0}
   _enemyPrefab: {fileID: 7873110425520278710, guid: 36ccf02df43da064ebbd4a5d15229967,
     type: 3}

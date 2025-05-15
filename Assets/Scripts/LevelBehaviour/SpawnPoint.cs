@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class SpawnPoint : MonoBehaviour
@@ -8,11 +5,11 @@ public class SpawnPoint : MonoBehaviour
     [Header("Behaviour")]
     [SerializeField] private EnemyIdleStates _enemyIdleStates;
     [SerializeField] private EnemyAgroStates _enemyAgroStates;
-    [Header("monobehi")]
+    [Header("Link")]
     [SerializeField] private Enemy _enemyPrefab;
 
     private Player _player;
-    private Enemy _currentEnemy;
+    private Enemy _enemy;
     private PatrolRoute _patrolRoute;
 
     private void Awake()
@@ -20,7 +17,7 @@ public class SpawnPoint : MonoBehaviour
         _player = FindObjectOfType<Player>(); //заменить!
         _patrolRoute = FindObjectOfType<PatrolRoute>(); //заменить!
 
-        _currentEnemy = Instantiate(_enemyPrefab, gameObject.transform);
+        _enemy = Instantiate(_enemyPrefab, gameObject.transform);
 
         SpawnWithAgro(_enemyAgroStates);
         SpawnWithIdle(_enemyIdleStates);
@@ -31,18 +28,18 @@ public class SpawnPoint : MonoBehaviour
         switch (enemyAgroState)
         {
             case EnemyAgroStates.RunAway:
-                RunAway runAway = new RunAway(_currentEnemy, _player);
-                _currentEnemy.SetAgroBehaviourTo(runAway);
+                RunAway runAway = new RunAway(_enemy, _player);
+                _enemy.SetAgroBehaviourTo(runAway);
                 break;
 
             case EnemyAgroStates.ChasePlayer:
-                ChasePlayer chasePlayer = new ChasePlayer(_currentEnemy, _player);
-                _currentEnemy.SetAgroBehaviourTo(chasePlayer);
+                ChasePlayer chasePlayer = new ChasePlayer(_enemy, _player);
+                _enemy.SetAgroBehaviourTo(chasePlayer);
                 break;
 
             case EnemyAgroStates.ScareAndDie:
-                ScareAndDie scareAndDie = new ScareAndDie(_currentEnemy, _player);
-                _currentEnemy.SetAgroBehaviourTo(scareAndDie);
+                ScareAndDie scareAndDie = new ScareAndDie(_enemy, _player);
+                _enemy.SetAgroBehaviourTo(scareAndDie);
                 break;
 
             default:
@@ -57,16 +54,17 @@ public class SpawnPoint : MonoBehaviour
         {
             case EnemyIdleStates.DoNothing:
                 DoNothing doNothing = new DoNothing();
-                _currentEnemy.SetIdleBehaviourTo(doNothing);
+                _enemy.SetIdleBehaviourTo(doNothing);
                 break;
 
             case EnemyIdleStates.FollowPatrolPoints:
-                FollowPatrolPoints followPatrolPoints = new FollowPatrolPoints(_patrolRoute.PatrolPoints, _currentEnemy);
-                _currentEnemy.SetIdleBehaviourTo(followPatrolPoints);
+                FollowPatrolPoints followPatrolPoints = new FollowPatrolPoints(_patrolRoute.PatrolPoints, _enemy);
+                _enemy.SetIdleBehaviourTo(followPatrolPoints);
                 break;
 
             case EnemyIdleStates.RandomPatrol:
-                //logic
+                RandomPatrol randomPatrol = new RandomPatrol(_enemy);
+                _enemy.SetIdleBehaviourTo(randomPatrol);
                 break;
 
             default:
