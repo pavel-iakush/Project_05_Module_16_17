@@ -5,7 +5,7 @@ public class SpawnPoint : MonoBehaviour
     [Header("Behaviour")]
     [SerializeField] private EnemyIdleStates _enemyIdleStates;
     [SerializeField] private EnemyAgroStates _enemyAgroStates;
-    [Header("Link")]
+    [Header("")]
     [SerializeField] private Enemy _enemyPrefab;
 
     private Player _player;
@@ -14,8 +14,8 @@ public class SpawnPoint : MonoBehaviour
 
     private void Awake()
     {
-        _player = FindObjectOfType<Player>(); //заменить!
-        _patrolRoute = FindObjectOfType<PatrolRoute>(); //заменить!
+        _player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        _patrolRoute = GameObject.FindGameObjectWithTag("PatrolPoints").GetComponentInParent<PatrolRoute>();
 
         _enemy = Instantiate(_enemyPrefab, gameObject.transform);
 
