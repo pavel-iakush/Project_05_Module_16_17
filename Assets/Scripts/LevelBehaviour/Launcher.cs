@@ -10,7 +10,8 @@ public class Launcher : MonoBehaviour
     private Enemy _currentEnemy;
     private Player _currentPlayer;
     private DistanceCalculator _currentCalculator;
-    private DistanceCalculator _currentPatrolCalculator;
+    private DistanceCalculator _randomPatrolCalculator;
+    private DistanceCalculator _pointPatrolCalculator;
     private RandomPointGenerator _randomPointGenerator;
     private SpawnPoint[] _spawnPoints;
 
@@ -33,18 +34,32 @@ public class Launcher : MonoBehaviour
 
             _randomPointGenerator = new RandomPointGenerator();
             _currentCalculator = new DistanceCalculator(_currentEnemy.transform, _currentPlayer.transform.position);
-            _currentPatrolCalculator = new DistanceCalculator(_currentEnemy.transform, _randomPointGenerator.ChooseTarget());
+            _randomPatrolCalculator = new DistanceCalculator(_currentEnemy.transform, _randomPointGenerator.ChooseTarget());
+            _pointPatrolCalculator = new DistanceCalculator(_currentEnemy.transform, _patrolRoute.PatrolPoints[0].transform.position);
 
             Mover mover = _currentEnemy.GetComponent<Mover>();
 
             _currentEnemy.Initialize(
-                SetIdleState(spawnPoint, _currentPatrolCalculator, mover, _patrolRoute.PatrolPoints, _randomPointGenerator),
-                SetAgroState(spawnPoint, _currentCalculator, mover),
-                _currentPlayer.transform, _currentCalculator);
+                SetIdleState(
+                    spawnPoint,
+                    _randomPatrolCalculator,
+                    _pointPatrolCalculator,
+                    mover,
+                    _patrolRoute.PatrolPoints,
+                    _randomPointGenerator
+                ),
+                SetAgroState(
+                    spawnPoint,
+                    _currentCalculator,
+                    mover
+                ),
+                _currentPlayer.transform,
+                _currentCalculator
+            );
         }
     }
 
-    private IBehaviour SetIdleState(SpawnPoint spawnPoint, DistanceCalculator randomPointCalculator, Mover mover, List<PatrolPoint> patrolPoints, RandomPointGenerator randomPointGenerator)
+    private IBehaviour SetIdleState(SpawnPoint spawnPoint, DistanceCalculator randomPointCalculator, DistanceCalculator pointPatrolCalculator, Mover mover, List<PatrolPoint> patrolPoints, RandomPointGenerator randomPointGenerator)
     {
 
         switch (spawnPoint.IdleState)
@@ -53,7 +68,7 @@ public class Launcher : MonoBehaviour
                 return new DoNothing();
 
             case IdleStates.FollowPatrolPoints:
-                return new FollowPatrolPoints(randomPointCalculator, patrolPoints, mover);
+                return new FollowPatrolPoints(pointPatrolCalculator, patrolPoints, mover);
 
             case IdleStates.RandomPatrol:
                 return new RandomPatrol(randomPointCalculator, mover, randomPointGenerator);

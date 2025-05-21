@@ -38,5 +38,6 @@ public class FollowPatrolPoints : IBehaviour
     {
         _currentPoint = _pointPositions.Dequeue();
         _pointPositions.Enqueue(_currentPoint);
+        _distanceCalculator.UpdateTarget(_currentPoint);
     }
 }
