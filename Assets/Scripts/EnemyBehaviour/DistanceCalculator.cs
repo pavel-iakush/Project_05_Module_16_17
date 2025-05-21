@@ -3,28 +3,29 @@ using UnityEngine;
 public class DistanceCalculator
 {
     private readonly Transform _source;
-    private Vector3 _currentTarget;
+    private Vector3 _target;
 
-    public DistanceCalculator(Transform source, Vector3 currentTarget)
+    public DistanceCalculator(Transform source, Vector3 target)
     {
         _source = source;
-        _currentTarget = currentTarget;
+        _target = target;
     }
 
     public void UpdateTarget(Vector3 newTarget)
     {
-        _currentTarget = newTarget;
+        _target = newTarget;
     }
 
-    public Vector3 GetCurrentTarget() => _currentTarget;
+    public Vector3 GetCurrentTarget()
+        => _target;
 
     public float GetDistance()
     {
-        return Vector3.Distance(_source.position, _currentTarget);
+        return Vector3.Distance(_source.position, _target);
     }
 
     public Vector3 GetDirectionNormalized()
     {
-        return (_source.position - _currentTarget).normalized;
+        return (_source.position - _target).normalized;
     }
 }

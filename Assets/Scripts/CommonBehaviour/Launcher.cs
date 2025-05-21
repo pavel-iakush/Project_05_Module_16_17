@@ -7,17 +7,19 @@ public class Launcher : MonoBehaviour
     [SerializeField] private Enemy _enemyPrefab;
     [SerializeField] private PatrolRoute _patrolRoute;
 
-    private Enemy _currentEnemy;
     private Player _currentPlayer;
+    private Enemy _currentEnemy;
+    private SpawnPoint[] _spawnPoints;
+
+    private RandomPointGenerator _randomPointGenerator;
     private DistanceCalculator _currentCalculator;
     private DistanceCalculator _randomPatrolCalculator;
     private DistanceCalculator _pointPatrolCalculator;
-    private RandomPointGenerator _randomPointGenerator;
-    private SpawnPoint[] _spawnPoints;
 
     void Start()
     {
         _currentPlayer = Instantiate(_playerPrefab);
+
         _randomPointGenerator = new RandomPointGenerator();
 
         GameObject[] spawnGameObject = GameObject.FindGameObjectsWithTag("SpawnPoint");
@@ -44,24 +46,21 @@ public class Launcher : MonoBehaviour
                     spawnPoint,
                     _randomPatrolCalculator,
                     _pointPatrolCalculator,
+                    _randomPointGenerator,
                     mover,
-                    _patrolRoute.PatrolPoints,
-                    _randomPointGenerator
-                ),
+                    _patrolRoute.PatrolPoints),
                 SetAgroState(
                     spawnPoint,
                     _currentCalculator,
-                    mover
-                ),
+                    mover),
                 _currentPlayer.transform,
                 _currentCalculator
             );
         }
     }
 
-    private IBehaviour SetIdleState(SpawnPoint spawnPoint, DistanceCalculator randomPointCalculator, DistanceCalculator pointPatrolCalculator, Mover mover, List<PatrolPoint> patrolPoints, RandomPointGenerator randomPointGenerator)
+    private IBehaviour SetIdleState(SpawnPoint spawnPoint, DistanceCalculator randomPointCalculator, DistanceCalculator pointPatrolCalculator, RandomPointGenerator randomPointGenerator, Mover mover, List<PatrolPoint> patrolPoints)
     {
-
         switch (spawnPoint.IdleState)
         {
             case IdleStates.DoNothing:
@@ -81,7 +80,6 @@ public class Launcher : MonoBehaviour
 
     private IBehaviour SetAgroState(SpawnPoint spawnPoint, DistanceCalculator distanceCalculator, Mover mover)
     {
-
         switch (spawnPoint.AgroState)
         {
             case AgroStates.RunAway:

@@ -3,8 +3,8 @@ using UnityEngine;
 public class RandomPatrol : IBehaviour
 {
     private DistanceCalculator _distanceCalculator;
-    private RandomPointGenerator _randomPointGenerator;
     private Mover _mover;
+    private RandomPointGenerator _randomPointGenerator;
 
     private float _patrolSpeed = 2.0f;
     private float _deadZone = 0.1f;
@@ -20,19 +20,20 @@ public class RandomPatrol : IBehaviour
 
     public void Update()
     {
-        if (_distanceCalculator.GetDistance() <= _deadZone)
+        float distanceToTarget = _distanceCalculator.GetDistance();
+
+        if (distanceToTarget <= _deadZone)
         {
             UpdateTargetPosition();
         }
 
-        Vector3 direction = _distanceCalculator.GetDirectionNormalized();
-        _mover.ProcessMoveTo(-direction, _patrolSpeed);
+        Vector3 directionNormalized = _distanceCalculator.GetDirectionNormalized();
+        _mover.ProcessMoveTo(-directionNormalized, _patrolSpeed);
     }
 
     private void UpdateTargetPosition()
     {
         Vector3 newTarget = _randomPointGenerator.ChooseTarget();
         _distanceCalculator.UpdateTarget(newTarget);
-        Debug.Log($"New patrol target: {newTarget}");
     }
 }

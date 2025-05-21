@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
-    public Mover Mover;
     public Transform PlayerTransform { get; set; }
     public DistanceCalculator DistanceCalculator { get; set; }
 
@@ -45,13 +44,17 @@ public class Enemy : MonoBehaviour
 
     public void SwitchToAgro()
     {
-        if (_currentBehaviour == _agroBehaviour) return;
+        if (_currentBehaviour == _agroBehaviour)
+            return;
+
         _currentBehaviour = _agroBehaviour;
     }
 
     public void SwitchToIdle()
     {
-        if (_currentBehaviour == _idleBehaviour) return;
+        if (_currentBehaviour == _idleBehaviour)
+            return;
+
         _currentBehaviour = _idleBehaviour;
     }
 }

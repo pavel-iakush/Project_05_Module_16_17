@@ -14,9 +14,9 @@ public class RunAway : IBehaviour
 
     public void Update()
     {
-        float distance = _distanceCalculator.GetDistance();
+        float distanceToTarget = _distanceCalculator.GetDistance();
 
-        if (distance < _runAwayRadius)
+        if (distanceToTarget < _runAwayRadius)
             _mover.ProcessMoveTo(_distanceCalculator.GetDirectionNormalized(), _runAwaySpeed);
     }
 }
