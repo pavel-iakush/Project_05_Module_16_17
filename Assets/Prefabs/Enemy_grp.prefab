@@ -116,6 +116,7 @@ GameObject:
   - component: {fileID: 3876108118676600552}
   - component: {fileID: 7873110425520278710}
   - component: {fileID: -7910238805673541301}
+  - component: {fileID: -3682174574125294600}
   m_Layer: 0
   m_Name: Enemy_grp
   m_TagString: Untagged
@@ -151,6 +152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f50ab0c7b41b7aa4ebf39a44c1fe17e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Mover: {fileID: -3682174574125294600}
 --- !u!114 &-7910238805673541301
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,5 +163,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 460af7a7dcc62ac41801a3f1863661bf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &-3682174574125294600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7274906453951272718}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2b0eeae56685264d959d0461460bc9d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

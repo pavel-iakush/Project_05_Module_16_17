@@ -1,37 +1,38 @@
 using UnityEngine;
 
-public class RandomPatrol : IIdleBehaviour
+public class RandomPatrol : IBehaviour
 {
-    private Vector3 _targetPoint = Vector3.zero;
-
-    private Enemy _enemy;
+    private DistanceCalculator _distanceCalculator;
+    private RandomPointGenerator _randomPointGenerator;
+    private Mover _mover;
 
     private float _patrolSpeed = 2.0f;
     private float _deadZone = 0.1f;
 
-    public RandomPatrol(Enemy enemy)
+    public RandomPatrol(DistanceCalculator distanceCalculator, Mover mover, RandomPointGenerator randomPointGenerator)
     {
-        _enemy = enemy;
+        _distanceCalculator = distanceCalculator;
+        _mover = mover;
+        _randomPointGenerator = randomPointGenerator;
 
-        ChooseTarget();
+        UpdateTargetPosition();
     }
 
-    public void UpdateIdle(float deltaTime)
+    public void Update()
     {
-        Vector3 direction = _targetPoint - _enemy.transform.position;
+        if (_distanceCalculator.GetDistance() <= _deadZone)
+        {
+            UpdateTargetPosition();
+        }
 
-        if (direction.magnitude <= _deadZone)
-            ChooseTarget();
-
-        ProcessMoveTo(direction.normalized, deltaTime);
+        Vector3 direction = _distanceCalculator.GetDirectionNormalized();
+        _mover.ProcessMoveTo(-direction, _patrolSpeed);
     }
 
-    private void ChooseTarget()
+    private void UpdateTargetPosition()
     {
-        _targetPoint.x = Random.Range(-8, 9);
-        _targetPoint.z = Random.Range(-6, 7);
+        Vector3 newTarget = _randomPointGenerator.ChooseTarget();
+        _distanceCalculator.UpdateTarget(newTarget);
+        Debug.Log($"New patrol target: {newTarget}");
     }
-
-    private void ProcessMoveTo(Vector3 direction, float deltaTime)
-        => _enemy.transform.Translate(direction * _patrolSpeed * deltaTime, Space.World);
 }

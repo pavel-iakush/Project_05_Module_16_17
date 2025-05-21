@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class Rotator : MonoBehaviour
 {
-    private float _rotateSpeed;
-
-    public void Initialize(float angle)
-        => _rotateSpeed = angle;
-
-    public void ProcessRotateTo(Vector3 direction)
+    public void ProcessRotateTo(Vector3 direction, float speed)
     {
         Quaternion lookRotation = Quaternion.LookRotation(direction);
-        float step = _rotateSpeed * Time.deltaTime;
+        float step = speed * Time.deltaTime;
 
         transform.rotation = Quaternion.RotateTowards(transform.rotation, lookRotation, step);
     }

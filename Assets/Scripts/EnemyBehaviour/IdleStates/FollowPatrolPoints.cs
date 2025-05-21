@@ -1,19 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FollowPatrolPoints : IIdleBehaviour
+public class FollowPatrolPoints : IBehaviour
 {
+    private DistanceCalculator _distanceCalculator;
+
     private Queue<Vector3> _pointPositions = new Queue<Vector3>();
     private Vector3 _currentPoint;
 
-    private Enemy _enemy;
+    private Mover _mover;
 
     private float _patrolSpeed = 2.0f;
     private float _deadZone = 0.1f;
 
-    public FollowPatrolPoints(List<PatrolPoint> patrolPoint, Enemy enemy)
+    public FollowPatrolPoints(DistanceCalculator distanceCalculator, List<PatrolPoint> patrolPoint, Mover mover)
     {
-        _enemy = enemy;
+        _mover = mover;
+        _distanceCalculator = distanceCalculator;
 
         foreach (PatrolPoint point in patrolPoint)
             _pointPositions.Enqueue(point.transform.position);
@@ -21,14 +24,14 @@ public class FollowPatrolPoints : IIdleBehaviour
         SwitchPatrolPoint();
     }
 
-    public void UpdateIdle(float deltaTime)
+    public void Update()
     {
-        Vector3 direction = _currentPoint - _enemy.transform.position;
+        float distance = _distanceCalculator.GetDistance();
 
-        if (direction.magnitude <= _deadZone)
+        if (distance <= _deadZone)
             SwitchPatrolPoint();
 
-        ProcessMoveTo(direction.normalized, deltaTime);
+        _mover.ProcessMoveTo(-_distanceCalculator.GetDirectionNormalized(), _patrolSpeed);
     }
 
     private void SwitchPatrolPoint()
@@ -36,7 +39,4 @@ public class FollowPatrolPoints : IIdleBehaviour
         _currentPoint = _pointPositions.Dequeue();
         _pointPositions.Enqueue(_currentPoint);
     }
-
-    private void ProcessMoveTo(Vector3 direction, float deltaTime)
-        => _enemy.transform.Translate(direction * _patrolSpeed * deltaTime, Space.World);
 }

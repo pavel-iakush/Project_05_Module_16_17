@@ -12,12 +12,6 @@ public class Player : MonoBehaviour
     private string _zAxisName = "Vertical";
     private float _deadZone = 0.1f;
 
-    private void Awake()
-    {
-        _mover.Initialize(_moveSpeed);
-        _rotator.Initialize(_rotateSpeed);
-    }
-
     private void Update()
     {
         Vector3 input = new Vector3(Input.GetAxisRaw(_xAxisName), 0, Input.GetAxisRaw(_zAxisName));
@@ -28,10 +22,8 @@ public class Player : MonoBehaviour
         }
         else
         {
-            Vector3 NormalizedInput = input.normalized;
-
-            _mover.ProcessMoveTo(NormalizedInput);
-            _rotator.ProcessRotateTo(NormalizedInput);
+            _mover.ProcessMoveTo(input.normalized, _moveSpeed);
+            _rotator.ProcessRotateTo(input.normalized, _rotateSpeed);
         }
     }
 }

@@ -1,6 +1,6 @@
-public class DoNothing : IIdleBehaviour
+public class DoNothing : IBehaviour
 {
-    public void UpdateIdle(float deltaTime)
+    public void Update()
     {
         return;
     }

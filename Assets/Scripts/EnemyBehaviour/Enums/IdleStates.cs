@@ -1,4 +1,4 @@
-public enum EnemyIdleStates
+public enum IdleStates
 {
     DoNothing = 0,
     FollowPatrolPoints = 1,

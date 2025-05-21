@@ -1,29 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UIElements;
-
-public class ChasePlayer : IAgroBehaviour
+public class ChasePlayer : IBehaviour
 {
-    private Enemy _enemy;
-    private Player _player;
+    private DistanceCalculator _distanceCalculator;
+    private Mover _mover; 
 
     private float _chaseRadius = 4.0f;
     private float _chaseSpeed = 3.5f;
 
-    public ChasePlayer(Enemy enemy, Player player)
+    public ChasePlayer(DistanceCalculator distanceCalculator, Mover mover)
     {
-        _enemy = enemy;
-        _player = player;
+        _distanceCalculator = distanceCalculator;
+        _mover = mover;
     }
 
-    public void UpdateAgro(float deltaTime)
+    public void Update()
     {
-        Vector3 direction = _player.transform.position - _enemy.transform.position;
-        Vector3 normalizedDirection = direction.normalized;
-        float distance = direction.magnitude;
+        float distance = _distanceCalculator.GetDistance();
 
         if (distance < _chaseRadius)
-            _enemy.transform.Translate(normalizedDirection * _chaseSpeed * Time.deltaTime);
+            _mover.ProcessMoveTo(-_distanceCalculator.GetDirectionNormalized(), _chaseSpeed);
     }
 }
